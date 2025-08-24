@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <script src="./src/main.js" type="module"></script>
+    <link rel="stylesheet" href="./src/style.css" />
+    <title>Board Game Visual Analytics</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        margin: 20px;
+      }
+
+      #visualization-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 2em;
+        justify-content: center;
+        align-items: flex-start;
+      }
+
+      #visualization-container > div {
+        flex: 1;
+        min-width: 400px;
+      }
+
+      svg {
+        width: 100%;
+        height: 500px;
+        border: 1px solid #ccc;
+        background: #f9f9f9;
+      }
+
+      h2, h3 {
+        margin-top: 0;
+      }
+
+      .controls {
+        margin-bottom: 1em;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div style="margin-bottom: 1em">
+      <label for="sync-toggle" style="font-weight: bold">
+        🔄 Sync Top N Inputs Between Tasks:
+      </label>
+      <input type="checkbox" id="sync-toggle" />
+    </div>
+
+    <div id="visualization-container">
+      <div>
+        <h2>Task 2: k-Means Clustering</h2>
+        <h3>k-Means Clustering of Board Games by Bayesian Rating & Complexity</h3>
+        <div id="clustering-controls" class="controls">
+          <h3>🎯 Clustering Settings</h3>
+
+          <label for="top-n-input">Top X Games (max 1000):</label>
+          <input
+            type="number"
+            id="top-n-input"
+            min="1"
+            max="21768"
+            value="100"
+            style="margin-right: 20px"
+          />
+
+          <label for="k-select">Number of Clusters (k):</label>
+          <select id="k-select" style="margin-right: 20px">
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+            <option value="6">6</option>
+            <option value="7">7</option>
+            <option value="8">8</option>
+            <option value="9">9</option>
+            <option value="10">10</option>
+          </select>
+
+          <label for="distance-select">Distance Metric:</label>
+          <select id="distance-select" style="margin-right: 30px">
+            <option value="euclidean">Euclidean</option>
+            <option value="manhattan">Manhattan</option>
+          </select>
+
+          <br /><br />
+          Draw visualization with selected parameters:
+          <button id="drawVisualization">Draw</button>
+
+          <br /><br />
+          Scroll to zoom & drag to move the visualization!
+          <button id="resetZoom">Reset Zoom</button>
+        </div>
+
+        <svg id="clusterPlot"></svg>
+      </div>
+
+      <div>
+        <h2>Task 3: Board Game Recommendation Network</h2>
+        <h3>Graph visualization of "Fans Also Like" relationships using PageRank</h3>
+        <div id="task3-controls" class="controls">
+          <h3>🎮 Network Settings</h3>
+
+          <label for="top-games-input">Show Top N Games:</label>
+          <input
+            type="number"
+            id="top-games-input"
+            min="1"
+            max="1000"
+            value="15"
+            style="margin-right: 20px"
+          />
+
+          <button id="updateGraph">Update Graph</button>
+        </div>
+
+        <svg id="task3Plot"></svg>
+      </div>
+    </div>
+
+    <script>
+      const toggle = document.getElementById("sync-toggle");
+      const inputTask2 = document.getElementById("top-n-input");
+      const inputTask3 = document.getElementById("top-games-input");
+
+      const drawBtn = document.getElementById("drawVisualization");
+      const updateBtn = document.getElementById("updateGraph");
+
+      let syncing = false;
+
+      function syncInputs(fromInput, toInput) {
+        if (syncing || !toggle.checked) return;
+        syncing = true;
+        toInput.value = fromInput.value;
+        syncing = false;
+      }
+
+      function handleInput2() {
+        syncInputs(inputTask2, inputTask3);
+      }
+
+      function handleInput3() {
+        syncInputs(inputTask3, inputTask2);
+      }
+
+      // Toggle input sync ON/OFF
+      toggle.addEventListener("change", () => {
+        if (toggle.checked) {
+          inputTask3.value = inputTask2.value;
+          inputTask2.addEventListener("input", handleInput2);
+          inputTask3.addEventListener("input", handleInput3);
+        } else {
+          inputTask2.removeEventListener("input", handleInput2);
+          inputTask3.removeEventListener("input", handleInput3);
+        }
+      });
+
+      // Trigger both when synced
+      drawBtn.addEventListener("click", (e) => {
+        if (toggle.checked) {
+          e.preventDefault();
+          updateBtn.click();
+        }
+      });
+
+      updateBtn.addEventListener("click", (e) => {
+        if (toggle.checked) {
+          e.preventDefault();
+          drawBtn.click();
+        }
+      });
+    </script>
+  </body>
+</html>

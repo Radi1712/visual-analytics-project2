@@ -1,0 +1,43 @@
+#clustering-controls {
+  margin-bottom: 20px;
+}
+
+#clustering-controls label {
+  font-weight: bold;
+  margin-right: 8px;
+}
+
+/* Task 3 Styles */
+#task3 {
+  #task3-controls {
+    margin-bottom: 20px;
+  }
+
+  #task3-controls label {
+    font-weight: bold;
+    margin-right: 8px;
+  }
+
+  .tooltip {
+    background-color: white;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    pointer-events: none;
+    font-size: 14px;
+  }
+
+  #task3Plot {
+    border: 1px solid #ddd;
+    margin-top: 20px;
+    margin-bottom: 40px;
+  }
+  .links line {
+    transition: stroke 0.3s;
+  }
+
+  .links line.highlighted {
+    stroke: #324732; /* Green color */
+    stroke: #427468; /* Green color */
+  }
+}

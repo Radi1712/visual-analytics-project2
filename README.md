@@ -1,2 +1,3 @@
-# visual-analytics-project2
-A repository containing the implementation of the second of two group projects for the course "Visuelle Datenanalyse" during my Master's studies.
+# Visual Analytics Project 2
+
+Maximilian Mundt, Felix Jeske, Radmehr Nouri Inanlou, Muhammad Fakhar
